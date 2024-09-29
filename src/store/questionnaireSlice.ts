@@ -8,22 +8,22 @@ const initialState: QuestionnaireState = {
             title: "Do you need help with any of the following issues?",
             subheader: 'Select One (1)',
             options: [
-                { label: 'Scalp Dryness' },
-                { label: 'Split ends / Hair breakage' },
-                { label: 'Thinning hair' },
+                { label: 'Meditarrean diets' },
+                { label: 'American diets' },
+                { label: 'Mexican foods' },
                 { label: 'None of the above' }
             ],
             type: 'question',
         },
         {
             id: '2',
-            title: "How would you describe your hair overall?",
+            title: "How would you describe your weekly cooking?",
             subheader: 'Select One (1)',
             options: [
-                { label: 'Generally dry' },
-                { label: 'Oily roots and dry ends' },
-                { label: 'Flaky scalp and dry ends' },
-                { label: 'Fairly balanced / No outstanding issues' }
+                { label: 'Generally quick' },
+                { label: 'Very tiring' },
+                { label: 'Exciting' },
+                { label: 'Just ordinary' }
             ],
             type: 'question',
         }

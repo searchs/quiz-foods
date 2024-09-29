@@ -17,15 +17,16 @@ const Question: React.FC<{ question: QuestionType; answer?: Answer }> = ({ quest
     };
 
     return (
-        <Card className="mb-4">
+        <Card className="mb-4 shadow-sm">
             <Card.Body>
-                <Card.Title>{question.title}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">{question.subheader}</Card.Subtitle>
+                <Card.Title className={`fw-bolder fs-4`}>{question.title}</Card.Title>
+                <Card.Subtitle className="mb-2 text-fw-bold text-opacity-25">{question.subheader}</Card.Subtitle>
                 <Form>
                     {question.options.map((option, index) => (
                         <Form.Check
                             key={index}
                             type="radio"
+                            className={`border border-2 rounded-4 p-4 mx-3 mb-2`}
                             id={`${question.id}-${index}`}
                             label={option.label}
                             name={question.id}
@@ -54,6 +55,7 @@ const Questionnaire: React.FC = () => {
     const isAllQuestionsAnswered = questions.length === answers.length;
 
     if (isSubmitted) {
+        console.log(`ANSWERS : ${answers}`)
         return (
             <Container className="mt-5">
                 <Alert variant="success">
