@@ -1,12 +1,14 @@
 import React from 'react';
+
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../store';
+import { RootState, AppDispatch } from '../../store';
 import {
     answerQuestion,
     resetAnswers,
-} from '../store/questionnaireSlice';
-import { submitQuestionnaireThunk } from '../store/questionnaireThunks';
-import { Question as QuestionType, Answer } from '../types';
+} from '../../store/questionnaireSlice';
+import { submitQuestionnaireThunk } from '../../store/questionnaireThunks';
+
+import { Question as QuestionType, Answer } from '../../types';
 import { Container, Form, Button, Card, Col, Row,Alert } from 'react-bootstrap';
 
 const Question: React.FC<{ question: QuestionType; answer?: Answer }> = ({ question, answer }) => {
@@ -21,7 +23,7 @@ const Question: React.FC<{ question: QuestionType; answer?: Answer }> = ({ quest
             <Card.Body className={`bg-light rounded-5`}>
                 <Row>
                     <Col md={5} className={`p-3`}>
-                        <Card.Title className={`display-4 fw-bolder text-dark text-opacity-25`}> {question.title}</Card.Title>
+                        <Card.Title className={`display-6 fw-bolder text-dark text-opacity-50`}> {question.title}</Card.Title>
                         <Card.Subtitle className="mb-2 text-fw-bold text-opacity-25">{question.subheader}</Card.Subtitle>
                     </Col>
                 <Col md={7}>

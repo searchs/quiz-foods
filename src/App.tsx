@@ -1,24 +1,23 @@
 import React from 'react';
+import {BrowserRouter as Router, Route, Routes, Navigate, useNavigate} from 'react-router-dom';
+
 import Questionnaire from './components/Questionnaire';
 import Login from './components/Login';
-import {Container, Row, Col} from 'react-bootstrap';
 import './App.css';
+import Signup from "./components/Signup";
 
 const App: React.FC = () => {
     return (
-        <Container className="App">
-            <Row>
-                <Col md={4}>
-                    <Login/>
-                </Col>
-            </Row>
-            <Row>
-                <Col md={8}>
-                    <Questionnaire/>
-                </Col>
-            </Row>
-        </Container>
-    );
+        <Routes>
+            <Route path="/" element={<Questionnaire/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/signup" element={<Signup/>}/>
+        </Routes>)
 };
 
-export default App;
+const Main: React.FC = () => (
+    <Router>
+        <App/>
+    </Router>
+)
+export default Main;
