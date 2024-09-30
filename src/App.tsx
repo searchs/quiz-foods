@@ -1,18 +1,14 @@
 import React from 'react';
+import Questionnaire from './components/Questionnaire';
+import { Container } from 'react-bootstrap';
 import './App.css';
 
-import Questionnaire from './components/Questionnaire';
-
-function App() {
+const App: React.FC = () => {
     return (
-        <div className="App">
-            <header className="App-header">
-              <Questionnaire />
-
-
-            </header>
-        </div>
+        <Container className="App">
+            <Questionnaire />
+        </Container>
     );
-}
+};
 
 export default App;
