@@ -1,86 +1,106 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
-import { loginStart, loginSuccess, loginFailure, logout } from '../../store/userSlice';
-import { Form, Button, Alert, Container, Card, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom'; // assuming you're using react-router for navigation
+import { Form, Button, Container, Card, Row, Col } from 'react-bootstrap';
+import Select from 'react-select';
+import { getNames } from 'country-list';
+
+interface CountryOption {
+    value: string;
+    label: string;
+}
 
 const Signup: React.FC = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const dispatch = useDispatch<AppDispatch>();
-    const { currentUser, isLoading, error } = useSelector((state: RootState) => state.user);
+    const [firstName, setFirstName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [mobile, setMobile] = useState<string>('');
+    const [country, setCountry] = useState<string>('');
 
-    const handleLogin = (e: React.FormEvent) => {
+    // Get the list of country names and map to { value, label } format for react-select
+    const countryOptions: CountryOption[] = getNames().map((countryName) => ({
+        value: countryName,
+        label: countryName,
+    }));
+
+    const handleSignup = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(loginStart());
-        // Simulate API call
-        setTimeout(() => {
-            if (username === 'demo' && password === 'password') {
-                dispatch(loginSuccess({ id: '1', username }));
-            } else {
-                dispatch(loginFailure('Invalid username or password'));
-            }
-        }, 1000);
-    };
+        // Submit the signup data to your API or backend service
+        console.log({
+            firstName,
+            lastName,
+            email,
+            mobile,
+            country,
+        });
 
-    const handleLogout = () => {
-        dispatch(logout());
+        // Reset form (optional)
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setMobile('');
+        setCountry('');
     };
-
-    if (currentUser) {
-        return (
-            <Container>
-                <Row className="d-flex justify-content-center align-items-center vh-100">
-                    <Col md={6}>
-                        <p>Logged in as {currentUser.username}</p>
-                        <Button onClick={handleLogout}>Logout</Button>
-                    </Col>
-                </Row>
-            </Container>
-        );
-    }
 
     return (
         <Container className="vh-100">
             <Row className="d-flex justify-content-center align-items-center vh-100">
                 <Col md={6} lg={4}>
                     <Card className="p-4">
-                        <Form onSubmit={handleLogin}>
-                            <Form.Group>
-                                <Form.Label>Username</Form.Label>
+                        <h3 className="text-center mb-4">Signup</h3>
+                        <Form onSubmit={handleSignup}>
+                            <Form.Group className="mb-3">
+                                <Form.Label>First Name</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
+                                    value={firstName}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
                                     required
+                                    placeholder="Enter your first name"
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Password</Form.Label>
+                                <Form.Label>Last Name</Form.Label>
                                 <Form.Control
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    type="text"
+                                    value={lastName}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
                                     required
+                                    placeholder="Enter your last name"
                                 />
                             </Form.Group>
-                            {error && <Alert variant="danger">{error}</Alert>}
-
+                            <Form.Group className="mb-3">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    value={email}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                                    required
+                                    placeholder="Enter your email"
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Mobile Number</Form.Label>
+                                <Form.Control
+                                    type="tel"
+                                    value={mobile}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMobile(e.target.value)}
+                                    required
+                                    placeholder="Enter your mobile number"
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Country</Form.Label>
+                                <Select
+                                    options={countryOptions}
+                                    onChange={(selectedOption) => setCountry(selectedOption?.value || '')}
+                                    placeholder="Select your country"
+                                />
+                            </Form.Group>
                             <div className="d-flex justify-content-center">
-                                <Button type="submit" variant="primary" size="lg" disabled={isLoading} className={`w-50`}>
-                                    {isLoading ? 'Logging in...' : 'Login'}
+                                <Button type="submit" variant="primary" size="lg">
+                                    Signup
                                 </Button>
                             </div>
                         </Form>
-
-                        <div className="text-center mt-4">
-                            <p>
-                                <Link to="/signup">Signup</Link> |
-                                <Link to="/reset-password" className="ms-2">Reset Password</Link> |
-                                <Link to="/" className="ms-2">Home</Link>
-                            </p>
-                        </div>
                     </Card>
                 </Col>
             </Row>
