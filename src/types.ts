@@ -27,3 +27,21 @@ export interface QuestionnaireState {
     isSubmitting: boolean;
 }
 
+
+export interface User {
+    id: string;
+    username: string;
+}
+
+export interface UserState {
+    currentUser: User | null;
+    isLoading: boolean;
+    error: string | null;
+}
+
+export interface RootState {
+    questionnaire: QuestionnaireState;
+    user: UserState;
+}
+
+

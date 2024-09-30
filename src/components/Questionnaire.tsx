@@ -7,7 +7,7 @@ import {
 } from '../store/questionnaireSlice';
 import { submitQuestionnaireThunk } from '../store/questionnaireThunks';
 import { Question as QuestionType, Answer } from '../types';
-import {Container, Form, Button, Card, Alert, Col, Row} from 'react-bootstrap';
+import { Container, Form, Button, Card, Col, Row,Alert } from 'react-bootstrap';
 
 const Question: React.FC<{ question: QuestionType; answer?: Answer }> = ({ question, answer }) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -51,6 +51,7 @@ const Question: React.FC<{ question: QuestionType; answer?: Answer }> = ({ quest
 
 const Questionnaire: React.FC = () => {
     const { questions, answers, isSubmitted, isSubmitting } = useSelector((state: RootState) => state.questionnaire);
+    const { currentUser } = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch<AppDispatch>();
 
     const handleReset = () => {
@@ -58,27 +59,31 @@ const Questionnaire: React.FC = () => {
     };
 
     const handleSubmit = () => {
-        dispatch(submitQuestionnaireThunk());
+        if (currentUser) {
+            dispatch(submitQuestionnaireThunk(currentUser.id));
+        } else {
+            alert('Please log in to submit the questionnaire.');
+        }
     };
 
     const isAllQuestionsAnswered = questions.length === answers.length;
 
     if (isSubmitted) {
-        console.log(`ANSWERS : ${answers}`)
         return (
             <Container className="mt-5">
-                <Alert variant="info">
-                    <Alert.Heading>Thank you for completing the questionnaire!</Alert.Heading>
+                <Alert variant="success">
+                    <Alert.Heading>Thank you for completing the questionnaire, {currentUser?.username}!</Alert.Heading>
                     <p>Your responses have been recorded.</p>
                 </Alert>
-                <Button variant="primary" size={`lg`} className={`fs-6 fw-bolder`} onClick={handleReset}>Start Over</Button>
+                <Button variant="primary" onClick={handleReset}>Start Over</Button>
             </Container>
         );
     }
 
     return (
         <Container className="mt-5">
-            <h1 className="mb-4 display-1 text-opacity-25">Questionnaire</h1>
+            <h1 className="mb-4">Questionnaire</h1>
+            {currentUser && <p>Welcome, {currentUser.username}!</p>}
             {questions.map(question => (
                 <Question
                     key={question.id}
@@ -87,13 +92,11 @@ const Questionnaire: React.FC = () => {
                 />
             ))}
             <div className="d-flex justify-content-between">
-                <Button variant="dark" size={`lg`} className={`fs-6 fw-bolder`} onClick={handleReset}>Reset Answers</Button>
+                <Button variant="secondary" onClick={handleReset}>Reset Answers</Button>
                 <Button
                     variant="primary"
-                    size={`lg`}
-                    className={`fs-6 fw-bolder`}
                     onClick={handleSubmit}
-                    disabled={!isAllQuestionsAnswered || isSubmitting}
+                    disabled={!isAllQuestionsAnswered || isSubmitting || !currentUser}
                 >
                     {isSubmitting ? 'Submitting...' : 'Submit'}
                 </Button>
